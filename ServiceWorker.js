@@ -1,9 +1,9 @@
 const cacheName = "SingularityLab-PepsiRun-0.0.1";
 const contentToCache = [
-    "Build/PepsiRun_0-0-1_2023-04-07_002.loader.js",
-    "Build/PepsiRun_0-0-1_2023-04-07_002.framework.js.unityweb",
-    "Build/PepsiRun_0-0-1_2023-04-07_002.data.unityweb",
-    "Build/PepsiRun_0-0-1_2023-04-07_002.wasm.unityweb",
+    "Build/Build.loader.js",
+    "Build/Build.framework.js.unityweb",
+    "Build/Build.data.unityweb",
+    "Build/Build.wasm.unityweb",
     "TemplateData/style.css"
 
 ];
