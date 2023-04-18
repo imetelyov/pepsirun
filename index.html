@@ -90,7 +90,9 @@
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
+          var p = 100 * progress + "%";
+          progressBarFull.style.clipPath = "polygon(0% 0%, " + p + " 0%, " + p + " 100%, 0% 100%";
+          //progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
         }).catch((message) => {
