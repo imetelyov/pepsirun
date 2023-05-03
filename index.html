@@ -14,9 +14,8 @@
       <div id="unity-loading-bar">
         <dib id="gradient"></dib>
         <div id="unity-logo">
-          <div id="unity-title-kz">Сенің дәмін<br>Сенің таңдауың</div>
-          <br>
-          <div id="unity-title-ru">Твой вкус<br>Твой выбор</div>
+          <div id="unity-title-kz"></div>
+          <div id="unity-title-ru"></div>
         </div>
         <div id="unity-progress-bar-container">
           <div id="unity-progress-bar-empty">
@@ -26,6 +25,11 @@
       </div>
       <div id="unity-warning"> </div>
     </div>
+
+    <!-- Photo upload element -->
+    <input type="file" id="image_selector" accept="image/png, image/gif, image/jpeg" />
+    <input type="hidden" id="upload_image" />
+
     <script>
       window.addEventListener("load", function () {
         if ("serviceWorker" in navigator) {
@@ -92,7 +96,7 @@
       }
 
       loadingBar.style.display = "block";
-
+      var unityGame;
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
@@ -101,11 +105,31 @@
           progressBarFull.style.clipPath = "polygon(0% 0%, " + p + " 0%, " + p + " 100%, 0% 100%";
           //progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
+          unityGame = unityInstance;
           loadingBar.style.display = "none";
         }).catch((message) => {
           alert(message);
         });
       };
+
+      var input = document.getElementById("image_selector");
+      var uploader = document.getElementById("upload_image");
+      
+      input.addEventListener("change", function () {
+        if(unityGame != null) {
+          confirm(input.value);
+          unityGame.SendMessage("ImageUploader", "CheckForFiles", input.value);
+        }
+      });
+
+      uploader.onclick = function () {
+        if(input.files.length == 0) {
+          confirm("NO FILES");
+        } else {
+          confirm("UPLOAD STARTED");
+        }
+      }
+
       document.body.appendChild(script);
     </script>
   </body>
