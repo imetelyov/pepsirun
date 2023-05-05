@@ -9,13 +9,12 @@
     <link rel="manifest" href="manifest.webmanifest">
   </head>
   <body>
-    <div id="unity-container">
+    <div id="unity-container" lang="kk">
       <canvas id="unity-canvas" width=480 height=854 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <dib id="gradient"></dib>
         <div id="unity-logo">
-          <div id="unity-title-kz"></div>
-          <div id="unity-title-ru"></div>
+          <div id="unity-title"></div>
         </div>
         <div id="unity-progress-bar-container">
           <div id="unity-progress-bar-empty">
@@ -97,13 +96,25 @@
 
       loadingBar.style.display = "block";
       var unityGame;
+      var getParamName = "language";
+      var searchParams = new URLSearchParams(window.location.href);
+      
+      // Commented for build. uncomment for tests
+      /* searchParams.append(getParamName, "ru"); */
+      var language = searchParams.get(getParamName);
+
+      if (language != null) {
+        document.getElementById("unity-container").lang = language;
+      } else {
+        console.log("ERROR: No such get parameters");
+      }
+
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           var p = 100 * progress + "%";
           progressBarFull.style.clipPath = "polygon(0% 0%, " + p + " 0%, " + p + " 100%, 0% 100%";
-          //progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           unityGame = unityInstance;
           loadingBar.style.display = "none";
