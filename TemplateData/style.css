@@ -6,7 +6,7 @@ body { padding: 0; margin: 0 }
 
 /* Shreable CSS: switch "inherit" to "absolute" for PWA build or backwards for standart WebGL build*/
 #gradient { position: absolute; top: 0%; height: 55%; width: 100%; background: url('gradient.png') no-repeat center; background-size: contain;}
-#unity-logo { position: absolute; top: 20%; width: 100%; height: 20%; background: url('unity-logo-dark.png') no-repeat center; background-size: contain; }
+#unity-logo { position: absolute; top: 20%; width: 100%; height: 20%; background: url('unity-logo.png') no-repeat center; background-size: contain; }
 #unity-title {position: relative; top: 120%; height: 38%; background: url('TvoyVkus_rus.png') no-repeat center; background-size: contain;}
 #unity-progress-bar-container {position: absolute; bottom: 8%; height: 3%; width: 100%;}
 #unity-progress-bar-empty { height: 100%; aspect-ratio: 7.83; background: url('progress-bar-empty-dark.png') no-repeat center; background-size: contain; margin: 0% auto;}
