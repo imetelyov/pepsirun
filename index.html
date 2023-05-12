@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.webmanifest">
   </head>
   <body>
-    <div id="unity-container" lang="kk">
+    <div id="unity-container" lang="ky">
       <canvas id="unity-canvas" width=480 height=854 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <dib id="gradient"></dib>
@@ -28,6 +28,7 @@
     <!-- Photo upload element -->
     <input type="file" id="image_selector" accept="image/png, image/gif, image/jpeg" />
     <input type="hidden" id="upload_image" />
+    <input type="hidden" id="detect_language" />
 
     <script>
       window.addEventListener("load", function () {
@@ -104,7 +105,7 @@
       var language = searchParams.get(getParamName);
 
       if (language != null) {
-        document.getElementById("unity-container").lang = language;
+        container.lang = language;
       } else {
         console.log("ERROR: No such get parameters");
       }
@@ -125,7 +126,8 @@
 
       var input = document.getElementById("image_selector");
       var uploader = document.getElementById("upload_image");
-      
+      var langDetector = document.getElementById("detect_language");
+
       input.addEventListener("change", function () {
         if(unityGame != null) {
           confirm(input.value);
@@ -139,6 +141,10 @@
         } else {
           confirm("UPLOAD STARTED");
         }
+      }
+
+      langDetector.onclick = function () {
+        unityGame.SendMessage("MainMenu", "ReceiveLanguage", container.lang);
       }
 
       document.body.appendChild(script);
