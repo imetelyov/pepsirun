@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.webmanifest">
   </head>
   <body>
-    <div id="unity-container"lang="ru" data-countryid="0" data-authtoken="Bearer ey" data-isoffline="1" data-getallrequest="https://dev-api.vpluse.me/user-profile/get_game_data/get_all" data-getplayerrequest="https://dev-api.vpluse.me/user-profile/get_game_data/get_by_id>
+    <div id="unity-container" lang="ru" data-userID="0" data-countryID="0" data-authToken="Bearer ey" data-isOffline="0">
       <canvas id="unity-canvas" width=480 height=854 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <dib id="gradient"></dib>
@@ -25,7 +25,7 @@
       <div id="unity-warning"> </div>
     </div>
 
-    <!-- Input elements for interaction with Unity, for local tests -->
+    <!-- Input elements for interaction with Unity -->
     <input type="hidden" id="detect_image_upload" />
     <input type="hidden" id="detect_language" />
 
@@ -101,26 +101,23 @@
       
       // GET-parameters naming
       var langParam = "language";
+      var userIdParam = "user_id";
       var offlineParam = "offline";
       var countryIdParam = "country_id";
       var authTokenParam = "auth_token";
-      var getAllRqParam = "get_all_rq";
-      var getPlayerRqParam = "get_player_rq";
 
       // Commented for build. uncomment for tests
       /* searchParams.append(langParam, "kg");
+      searchParams.append(userIdParam, "2459");
       searchParams.append(offlineParam, "1");
       searchParams.append(countryIdParam, "1");
-      searchParams.append(getAllRqParam, "");
-      searchParams.append(getPlayerRqParam, "");
-      */
+      searchParams.append(authTokenParam, "Bearer ALDSS"); */
       
       var language = searchParams.get(langParam);
+      var userId  = searchParams.get(userIdParam);
       var isOffline = searchParams.get(offlineParam); 
       var countryId = searchParams.get(countryIdParam);
       var authToken = searchParams.get(authTokenParam);
-      var getAllRq = searchParams.get(getAllRqParam);
-      var getPlayerRq = searchParams.get(getPlayerRqParam);
 
       //Checking for language
       if (language != null) {
@@ -129,34 +126,28 @@
         console.log("ERROR: No lang parameter");
       }
 
+      if (userId != null) {
+        container.setAttribute("data-userID", userId);
+      } else {
+        console.log("ERROR: No user ID parameter");
+      }
+
       if (isOffline != null) {
-        container.setAttribute("data-isoffline", isOffline);
+        container.setAttribute("data-isOffline", isOffline);
       } else {
         console.log("ERROR: No offline parameter");
       }
 
       if (countryId != null) {
-        container.setAttribute("data-countryid", countryId);
+        container.setAttribute("data-countryID", countryId);
       } else {
         console.log("ERROR: No countryId parameter");
       }
 
       if (authToken != null) {
-        container.setAttribute("data-authtoken", authToken);
+        container.setAttribute("data-authToken", authToken);
       } else {
         console.log("ERROR: No authToken parameter");
-      }
-
-      if (getAllRq != null) {
-        container.setAttribute("data-getallrequest", getAllRq);
-      } else {
-        console.log("ERROR: No getAllRq parameter");
-      }
-
-      if (getPlayerRq != null) {
-        container.setAttribute("data-getplayerrequest", getPlayerRq);
-      } else {
-        console.log("ERROR: No getPlayerRq parameter");
       }
 
       var script = document.createElement("script");
@@ -173,12 +164,10 @@
         });
       };
 
-      // For local tests
       var imageUploadDetector = document.getElementById("detect_image_upload");
       var langDetector = document.getElementById("detect_language");
 
-
-       imageUploadDetector.onclick = function () {
+      imageUploadDetector.onclick = function () {
         if(unityGame == null)
         {
           console.log("NO INSTANCE IMAGE");
@@ -190,7 +179,7 @@
       };
 
       langDetector.onclick = function () {
-        if(unityGame == null)
+        if(!unityGame)
         {
           console.log("NO INSTANCE LANG");
           return;
