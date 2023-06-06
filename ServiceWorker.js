@@ -1,4 +1,4 @@
-const cacheName = "SingularityLab-PepsiRun-0.0.1";
+const cacheName = "SingularityLab-PepsiRun-0.0.3";
 const contentToCache = [
     "Build/Build.loader.js",
     "Build/Build.framework.js.unityweb",

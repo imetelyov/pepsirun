@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.webmanifest">
   </head>
   <body>
-    <div id="unity-container" lang="ru">
+    <div id="unity-container"lang="ru" data-countryid="0" data-authtoken="Bearer ey" data-isoffline="1" data-getallrequest="https://dev-api.vpluse.me/user-profile/get_game_data/get_all" data-getplayerrequest="https://dev-api.vpluse.me/user-profile/get_game_data/get_by_id>
       <canvas id="unity-canvas" width=480 height=854 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <dib id="gradient"></dib>
@@ -25,9 +25,8 @@
       <div id="unity-warning"> </div>
     </div>
 
-    <!-- Photo upload element -->
-    <input type="file" id="image_selector" accept="image/png, image/gif, image/jpeg" />
-    <input type="hidden" id="upload_image" />
+    <!-- Input elements for interaction with Unity, for local tests -->
+    <input type="hidden" id="detect_image_upload" />
     <input type="hidden" id="detect_language" />
 
     <script>
@@ -97,17 +96,67 @@
 
       loadingBar.style.display = "block";
       var unityGame;
-      var getParamName = "language";
+
       var searchParams = new URLSearchParams(window.location.href);
       
-      // Commented for build. uncomment for tests
-      /* searchParams.append(getParamName, "ru"); */
-      var language = searchParams.get(getParamName);
+      // GET-parameters naming
+      var langParam = "language";
+      var offlineParam = "offline";
+      var countryIdParam = "country_id";
+      var authTokenParam = "auth_token";
+      var getAllRqParam = "get_all_rq";
+      var getPlayerRqParam = "get_player_rq";
 
+      // Commented for build. uncomment for tests
+      /* searchParams.append(langParam, "kg");
+      searchParams.append(offlineParam, "1");
+      searchParams.append(countryIdParam, "1");
+      searchParams.append(getAllRqParam, "");
+      searchParams.append(getPlayerRqParam, "");
+      */
+      
+      var language = searchParams.get(langParam);
+      var isOffline = searchParams.get(offlineParam); 
+      var countryId = searchParams.get(countryIdParam);
+      var authToken = searchParams.get(authTokenParam);
+      var getAllRq = searchParams.get(getAllRqParam);
+      var getPlayerRq = searchParams.get(getPlayerRqParam);
+
+      //Checking for language
       if (language != null) {
         container.lang = language;
       } else {
-        console.log("ERROR: No such get parameters");
+        console.log("ERROR: No lang parameter");
+      }
+
+      if (isOffline != null) {
+        container.setAttribute("data-isoffline", isOffline);
+      } else {
+        console.log("ERROR: No offline parameter");
+      }
+
+      if (countryId != null) {
+        container.setAttribute("data-countryid", countryId);
+      } else {
+        console.log("ERROR: No countryId parameter");
+      }
+
+      if (authToken != null) {
+        container.setAttribute("data-authtoken", authToken);
+      } else {
+        console.log("ERROR: No authToken parameter");
+      }
+
+      if (getAllRq != null) {
+        container.setAttribute("data-getallrequest", getAllRq);
+      } else {
+        console.log("ERROR: No getAllRq parameter");
+      }
+
+      if (getPlayerRq != null) {
+        container.setAttribute("data-getplayerrequest", getPlayerRq);
+      } else {
+        console.log("ERROR: No getPlayerRq parameter");
       }
 
       var script = document.createElement("script");
@@ -124,26 +173,29 @@
         });
       };
 
-      var input = document.getElementById("image_selector");
-      var uploader = document.getElementById("upload_image");
+      // For local tests
+      var imageUploadDetector = document.getElementById("detect_image_upload");
       var langDetector = document.getElementById("detect_language");
 
-      input.addEventListener("change", function () {
-        if(unityGame != null) {
-          confirm(input.value);
-          unityGame.SendMessage("ImageUploader", "CheckForFiles", input.value);
-        }
-      });
 
-      uploader.onclick = function () {
-        if(input.files.length == 0) {
-          confirm("NO FILES");
-        } else {
-          confirm("UPLOAD STARTED");
+       imageUploadDetector.onclick = function () {
+        if(unityGame == null)
+        {
+          console.log("NO INSTANCE IMAGE");
+          return;
         }
-      }
+
+        // TODO: change the line below to open page link for photo upload
+        console.log("IMAGE REQUESTED");
+      };
 
       langDetector.onclick = function () {
+        if(unityGame == null)
+        {
+          console.log("NO INSTANCE LANG");
+          return;
+        }
+
         unityGame.SendMessage("MainMenu", "ReceiveLanguage", container.lang);
       }
 
